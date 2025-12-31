@@ -22,3 +22,7 @@ For my independent study, I fit hierarchical linear models, or linear mixed effe
 ## Transfer Students
 
 I was hired to help explore survey data for Swarthmore transfer students. I created a Shiny app and summarized my findings here: https://cmeng.shinyapps.io/shiny/
+
+## Gradeless 9th Grade Fall
+
+For an assignment for my master's program, I chose to explore the "gradeless 9th grade fall" at Marin Academy. I created and adminstered a survey for all 9th graders during the 2024-2025 school year and facilitated a 30-minute professional development session at the end of the school year to collectively discuss and evaluate gradeless fall. I built a Shiny app for my colleagues to explore the survey data: https://chrismeng41.shinyapps.io/GradelessFall2024/
