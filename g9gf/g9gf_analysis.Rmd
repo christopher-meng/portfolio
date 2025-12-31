@@ -1,0 +1,3613 @@
+---
+title: "Gradeless Fall 2024"
+output: pdf_document
+date: "2025-05-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+g9gf_2024 <- read_csv("Desktop/ISTR/mission/g9gf/G9GF_2024.csv")
+
+g9gf_2024 %>%
+                filter(Gender == "boy" | Gender == "girl") %>%
+                ggplot() +
+                geom_bar(aes(Rubrics, y = ..prop.., group = 1), stat = "count") +
+  geom_text(data = . %>%
+              filter(Gender == "boy" | Gender == "girl") %>%
+  group_by(Gender, Rubrics) %>%
+  tally() %>%
+  mutate(pct = n/sum(n)),
+    aes(Rubrics, pct, label = scales::percent(pct))
+  ) +
+                facet_wrap(. ~ Gender)
+
+g9gf_2024 %>%
+  filter(Gender == "boy" | Gender == "girl") %>%
+  group_by(Gender, Rubrics) %>%
+  tally() %>%
+  mutate(pct = n/sum(n))
+```
+
+```{r}
+# completed surveys
+g9gf_2024 %>% 
+  select(Progress) %>%
+  mutate(Complete = Progress == 100) %>%
+  summarize(complete = sum(Complete)/n()) #103/104
+
+# average length
+g9gf_2024 %>%
+  select(`Duration (in seconds)`) %>%
+  summarize(average_time = mean(`Duration (in seconds)`))
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Duration (in seconds)`)) +
+  geom_histogram()
+
+# demographics
+table(g9gf_2024$Race)
+
+table(g9gf_2024$TA)
+
+table(g9gf_2024$Gender)
+
+table(g9gf_2024$School_Type)
+```
+
+# Skills Analysis
+
+## Skills Analysis Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`PreFall_Skills_1`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`PostFall_Skills_1`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Current_Skills_1`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`PostFall_Skills_1`, g9gf_2024$`PreFall_Skills_1`, paired = TRUE, alternative = "greater")
+wilcox.test(g9gf_2024$`Current_Skills_1`, g9gf_2024$`PostFall_Skills_1`, paired = TRUE, alternative = "greater")
+skill1 <- t.test(g9gf_2024$`PostFall_Skills_1`, g9gf_2024$`PreFall_Skills_1`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Current_Skills_1`, g9gf_2024$`PostFall_Skills_1`, paired = TRUE, alternative = "greater")
+```
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`PreFall_Skills_2`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`PostFall_Skills_2`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Current_Skills_2`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`PostFall_Skills_2`, g9gf_2024$`PreFall_Skills_2`, paired = TRUE, alternative = "greater")
+wilcox.test(g9gf_2024$`Current_Skills_2`, g9gf_2024$`PostFall_Skills_2`, paired = TRUE, alternative = "greater")
+skill2 <- t.test(g9gf_2024$`PostFall_Skills_2`, g9gf_2024$`PreFall_Skills_2`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Current_Skills_2`, g9gf_2024$`PostFall_Skills_2`, paired = TRUE, alternative = "greater")
+```
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`PreFall_Skills_3`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`PostFall_Skills_3`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Current_Skills_3`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`PostFall_Skills_3`, g9gf_2024$`PreFall_Skills_3`, paired = TRUE, alternative = "greater")
+wilcox.test(g9gf_2024$`Current_Skills_3`, g9gf_2024$`PostFall_Skills_3`, paired = TRUE, alternative = "greater")
+skill3 <- t.test(g9gf_2024$`PostFall_Skills_3`, g9gf_2024$`PreFall_Skills_3`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Current_Skills_3`, g9gf_2024$`PostFall_Skills_3`, paired = TRUE, alternative = "greater")
+```
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`PreFall_Skills_4`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`PostFall_Skills_4`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Current_Skills_4`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`PostFall_Skills_4`, g9gf_2024$`PreFall_Skills_4`, paired = TRUE, alternative = "greater")
+wilcox.test(g9gf_2024$`Current_Skills_4`, g9gf_2024$`PostFall_Skills_4`, paired = TRUE, alternative = "greater")
+skill4 <- t.test(g9gf_2024$`PostFall_Skills_4`, g9gf_2024$`PreFall_Skills_4`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Current_Skills_4`, g9gf_2024$`PostFall_Skills_4`, paired = TRUE, alternative = "greater")
+```
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`PreFall_Skills_5`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`PostFall_Skills_5`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Current_Skills_5`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`PostFall_Skills_5`, g9gf_2024$`PreFall_Skills_5`, paired = TRUE, alternative = "greater")
+wilcox.test(g9gf_2024$`Current_Skills_5`, g9gf_2024$`PostFall_Skills_5`, paired = TRUE, alternative = "greater")
+skill5 <- t.test(g9gf_2024$`PostFall_Skills_5`, g9gf_2024$`PreFall_Skills_5`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Current_Skills_5`, g9gf_2024$`PostFall_Skills_5`, paired = TRUE, alternative = "greater")
+```
+
+```{r}
+p.adjust(c(skill1$p.value, skill2$p.value, skill3$p.value, skill4$p.value, skill5$p.value), method = "bonferroni")
+```
+
+## Skills Analysis by Gender
+
+The difference in PreFall to PostFall skill by gender is not significant.
+
+```{r}
+Skill1_Gender <- g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(Gender) %>%
+  select(FallDiff1)
+
+Skill1_Gender %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+
+t.test(FallDiff1 ~ Gender, data = Skill1_Gender, alternative = "less")
+```
+
+```{r}
+Skill2_Gender <- g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(Gender) %>%
+  select(FallDiff2)
+
+Skill2_Gender %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+
+t.test(FallDiff2 ~ Gender, data = Skill2_Gender, alternative = "less")
+```
+
+```{r}
+Skill3_Gender <- g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(Gender) %>%
+  select(FallDiff3)
+
+Skill3_Gender %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+
+t.test(FallDiff3 ~ Gender, data = Skill3_Gender, alternative = "less")
+```
+
+```{r}
+Skill4_Gender <- g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(Gender) %>%
+  select(FallDiff4)
+
+Skill4_Gender %>%
+  summarize(avg4 = mean(FallDiff4))
+
+t.test(FallDiff4 ~ Gender, data = Skill4_Gender, alternative = "less")
+```
+
+```{r}
+Skill5_Gender <- g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(Gender) %>%
+  select(FallDiff5) 
+
+Skill5_Gender %>%
+  summarize(avg5 = mean(FallDiff5))
+
+t.test(FallDiff5 ~ Gender, data = Skill5_Gender, alternative = "less")
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(Gender) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by Race
+
+```{r}
+Skill1_Race <- g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(POC) %>%
+  select(FallDiff1)
+
+Skill1_Race %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+
+t.test(FallDiff1 ~ POC, data = Skill1_Race, alternative = "less")
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(POC) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(POC) %>%
+  select(FallDiff3) %>%
+  summarize(avg1 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(POC) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(POC) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(POC) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(TA) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(TA) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(TA) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(TA) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(TA) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(TA) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by School Type
+
+```{r}
+Skill1_School <- g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(School_Type) %>%
+  select(FallDiff1)
+
+Skill1_School %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+
+t.test(FallDiff1 ~ School_Type, data = Skill1_School, alternative = "less")
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(School_Type) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(School_Type) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(School_Type) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(School_Type) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(School_Type) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by Race + Gender
+
+```{r}
+Skill1_RG <- g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  # mutate(group = case_when(
+  #   POC == "White" & Gender == 1 ~ "a",
+  #   POC == "White" & Gender == 2 ~ "b",
+  #   POC == "POC" & Gender == 1 ~ "c",
+  #   POC == "POC" & Gender == 2 ~ "d"
+  # )) %>%
+  mutate(group = case_when(
+    POC == "POC" & Gender == 1 ~ "BoyPOC",
+    TRUE ~ "NotBoyPOC"
+  )) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(group) %>%
+  select(FallDiff1)
+
+Skill1_RG %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+
+t.test(FallDiff1 ~ group, data = Skill1_RG, alternative = "less")
+
+anova(aov(FallDiff1 ~ POC * Gender, data = Skill1_RG), aov(FallDiff1 ~ POC + Gender, data = Skill1_RG)) # interaction is not needed
+summary(aov(FallDiff1 ~ POC + Gender, data = Skill1_RG))
+
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(POC, Gender) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(POC, Gender) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(POC, Gender) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(POC, Gender) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+Skill_RG <- g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & Gender <= 2) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+ mutate(group = case_when(
+    POC == "POC" & Gender == 1 ~ "BoyPOC",
+    TRUE ~ "NotBoyPOC"
+  )) %>%
+  group_by(group) %>%
+  select(FallTotal) 
+
+Skill_RG %>%
+  summarize(avg = mean(FallTotal), count = n())
+
+t.test(FallTotal ~ group, data = Skill_RG, alternative = "less")
+```
+
+## Skills Analysis by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(POC, TA) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(POC, TA) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(POC, TA) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(POC, TA) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(POC, TA) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(TA)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(POC, TA) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(POC, School_Type) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(POC, School_Type) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(POC, School_Type) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(POC, School_Type) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(POC, School_Type) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC) & !is.na(School_Type)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(POC, School_Type) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(Gender, TA) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(Gender, TA) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(Gender, TA) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(Gender, TA) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(Gender, TA) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(TA)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(Gender, TA) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2 & !is.na(School_Type)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(Gender, School_Type) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+## Skills Analysis by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallDiff1 = `PostFall_Skills_1` - `PreFall_Skills_1`) %>%
+  group_by(TA, School_Type) %>%
+  select(FallDiff1) %>%
+  summarize(avg1 = mean(FallDiff1), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallDiff2 = `PostFall_Skills_2` - `PreFall_Skills_2`) %>%
+  group_by(TA, School_Type) %>%
+  select(FallDiff2) %>%
+  summarize(avg2 = mean(FallDiff2), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallDiff3 = `PostFall_Skills_3` - `PreFall_Skills_3`) %>%
+  group_by(TA, School_Type) %>%
+  select(FallDiff3) %>%
+  summarize(avg3 = mean(FallDiff3), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallDiff4 = `PostFall_Skills_4` - `PreFall_Skills_4`) %>%
+  group_by(TA, School_Type) %>%
+  select(FallDiff4) %>%
+  summarize(avg4 = mean(FallDiff4), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallDiff5 = `PostFall_Skills_5` - `PreFall_Skills_5`) %>%
+  group_by(TA, School_Type) %>%
+  select(FallDiff5) %>%
+  summarize(avg5 = mean(FallDiff5), count = n())
+```
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA) & !is.na(School_Type)) %>%
+  mutate(FallTotal = ((`PostFall_Skills_1` - `PreFall_Skills_1`)+(`PostFall_Skills_2` - `PreFall_Skills_2`)+(`PostFall_Skills_3` - `PreFall_Skills_3`)+(`PostFall_Skills_4` - `PreFall_Skills_4`)+(`PostFall_Skills_5` - `PreFall_Skills_5`))/5) %>%
+  group_by(TA, School_Type) %>%
+  select(FallTotal) %>%
+  summarize(avg = mean(FallTotal), count = n())
+```
+
+# Assessment
+
+## Assessment Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Rubrics`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Grades`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Expectations`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Grades_SoFar`)) +
+  geom_bar()
+```
+
+## Assessment by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+```
+
+## Assessment by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Rubrics) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Rubrics))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Grades) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Expectations) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Expectations))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Grades_SoFar) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Grades_SoFar))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_Rubrics = mean(Rubrics), avg_Grades = mean(Grades), avg_Expect = mean(Expectations), avg_gsf = mean(Grades_SoFar), count = n())
+
+g9gf_2024 %>%
+  filter(Gender == "boy" | Gender == "girl") %>%
+  group_by(TA, Gender, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = Relationships, y = prop)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(TA ~ Gender)
+
+g9gf_2024 %>%
+                filter(Gender == "boy" | Gender == "girl") %>%
+                ggplot(aes_string(input$var, y = "..prop..", group = 1)) +
+                geom_bar(stat = "count") +
+                facet_wrap(. ~ eval(as.name(input$group1)))
+```
+
+# SEL
+
+## SEL Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Confidence`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Habits`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Relationships`)) +
+  geom_bar()
+```
+
+## SEL by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+## SEL by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Confidence) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Confidence))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Habits) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Habits))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Relationships) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Relationships))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_confidence = mean(Confidence), avg_habits = mean(Habits), avg_relationships = mean(Relationships), count = n())
+```
+
+# Feedback
+
+## Feedback Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Feedback_Strengths`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Feedback_Improve`)) +
+  geom_bar()
+```
+
+## Feedback by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+## Feedback by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Feedback_Strengths) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Strengths))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Feedback_Improve) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Feedback_Improve))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_strengths = mean(Feedback_Strengths), avg_improve = mean(Feedback_Improve), count = n())
+```
+
+# Motivation
+
+## Motivation Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Motivation_Fall`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Motivation_Spring`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`Motivation_Spring`, g9gf_2024$`Motivation_Fall`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Motivation_Spring`, g9gf_2024$`Motivation_Fall`, paired = TRUE, alternative = "greater")
+```
+
+## Motivation by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+## Motivation by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Motivation_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Motivation_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Motivation_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_fall = mean(Motivation_Fall), avg_spring = mean(Motivation_Spring), count = n())
+```
+
+# Homework
+
+## Homework Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Homework_Fall`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Homework_Spring`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`Homework_Spring`, g9gf_2024$`Homework_Fall`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Homework_Spring`, g9gf_2024$`Homework_Fall`, paired = TRUE, alternative = "greater")
+```
+
+## Homework by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+## Homework by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Homework_Fall) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Fall))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Homework_Spring) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Homework_Spring))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_fall = mean(Homework_Fall), avg_spring = mean(Homework_Spring), count = n())
+```
+
+# Stress
+
+## Stress Overall
+
+```{r}
+g9gf_2024 %>%
+  ggplot(aes(x=`Stress_Fall_1`)) +
+  geom_bar()
+
+g9gf_2024 %>%
+  ggplot(aes(x=`Stress_Spring_1`)) +
+  geom_bar()
+
+wilcox.test(g9gf_2024$`Stress_Spring_1`, g9gf_2024$`Stress_Fall_1`, paired = TRUE, alternative = "greater")
+t.test(g9gf_2024$`Stress_Spring_1`, g9gf_2024$`Stress_Fall_1`, paired = TRUE, alternative = "greater")
+```
+
+## Stress by Race
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(POC), y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC)) %>%
+  group_by(POC) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Gender
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(Gender), y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2) %>%
+  group_by(Gender) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by TA
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(TA), y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA)) %>%
+  group_by(TA) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  ggplot(aes(x = as.factor(School_Type), y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(School_Type)) %>%
+  group_by(School_Type) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Race + Gender
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & Gender == 1 ~ "WhiteBoy",
+    POC == "White" & Gender == 2 ~ "WhiteGirl",
+    POC == "POC" & Gender == 1 ~ "POCBoy",
+    POC == "POC" & Gender == 2 ~ "POCGirl"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), Gender <= 2) %>%
+  group_by(POC, Gender) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Race + TA
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & TA == 1 ~ "WhiteTA",
+    POC == "White" & TA == 2 ~ "WhiteNoTA",
+    POC == "POC" & TA == 1 ~ "POCTA",
+    POC == "POC" & TA == 2 ~ "POCNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(TA)) %>%
+  group_by(POC, TA) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Race + School Type
+
+```{r}
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    POC == "White" & School_Type == "public" ~ "WhitePublic",
+    POC == "White" & School_Type == "private" ~ "WhitePrivate",
+    POC == "POC" & School_Type == "public" ~ "POCPublic",
+    POC == "POC" & School_Type == "private" ~ "POCPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  mutate(POC = case_when(
+    Race == 1 ~ "White",
+    Race > 1 ~ "POC"
+  )) %>%
+  filter(!is.na(POC), !is.na(School_Type)) %>%
+  group_by(POC, School_Type) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Gender + TA
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & TA == 1 ~ "BoyTA",
+    Gender == 1 & TA == 2 ~ "BoyNoTA",
+    Gender == 2 & TA == 1 ~ "GirlTA",
+    Gender == 2 & TA == 2 ~ "GirlNoTA"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(TA)) %>%
+  group_by(Gender, TA) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by Gender + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    Gender == 1 & School_Type == "public" ~ "BoyPublic",
+    Gender == 1 & School_Type == "private" ~ "BoyPrivate",
+    Gender == 2 & School_Type == "public" ~ "GirlPublic",
+    Gender == 2 & School_Type == "private" ~ "GirlPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(Gender <= 2, !is.na(School_Type)) %>%
+  group_by(Gender, School_Type) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
+
+## Stress by TA + School Type
+
+```{r}
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Stress_Fall_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Fall_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type, Stress_Spring_1) %>%
+  summarize(count = n()) %>%
+  mutate(prop = count/sum(count)) %>%
+  mutate(group = case_when(
+    TA == 1 & School_Type == "public" ~ "TAPublic",
+    TA == 2 & School_Type == "public" ~ "NoTAPublic",
+    TA == 1 & School_Type == "private" ~ "TAPrivate",
+    TA == 2 & School_Type == "private" ~ "NoTAPrivate"
+  )) %>%
+  ggplot(aes(x = group, y = `prop`, fill = as.factor(Stress_Spring_1))) +
+  geom_col(position = "dodge")
+
+g9gf_2024 %>%
+  filter(!is.na(TA), !is.na(School_Type)) %>%
+  group_by(TA, School_Type) %>%
+  summarize(avg_fall = mean(Stress_Fall_1), avg_spring = mean(Stress_Spring_1), count = n())
+```
